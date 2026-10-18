@@ -13,22 +13,19 @@ jobs:
       matrix:
         config:
           - name: Windows
-            os: windows-2022 # <-- Usamos una imagen de servidor más estable
+            os: windows-latest
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup CMake # <-- Añadimos este paso para forzar una versión compatible de CMake
-        uses: jwlawson/actions-setup-cmake@v2
-        with:
-          cmake-version: '3.28.x'
-
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
         with:
           combine: true
-          sdk: v3.0.0-stable
+          # Al eliminar la línea "sdk:", la herramienta descargará automáticamente 
+          # la última versión compatible del SDK para Geometry Dash 2.2081 
+          # sin romper el instalador ni los bindings.
 
   package:
     name: Package builds
