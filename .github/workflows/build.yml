@@ -13,17 +13,22 @@ jobs:
       matrix:
         config:
           - name: Windows
-            os: windows-latest
+            os: windows-2022 # <-- Usamos una imagen de servidor más estable
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup CMake # <-- Añadimos este paso para forzar una versión compatible de CMake
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmake-version: '3.28.x'
+
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
         with:
           combine: true
-          sdk: v3.0.0-beta.1
+          sdk: v3.0.0-stable
 
   package:
     name: Package builds
